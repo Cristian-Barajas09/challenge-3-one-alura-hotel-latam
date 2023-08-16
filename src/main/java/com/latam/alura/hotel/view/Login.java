@@ -1,6 +1,8 @@
 package com.latam.alura.hotel.view;
 
 import com.latam.alura.hotel.controller.LoginController;
+import com.latam.alura.hotel.model.Usuario;
+import com.latam.alura.hotel.utils.ValidatePasswords;
 
 import java.awt.*;
 import javax.swing.*;
@@ -238,17 +240,34 @@ public class Login extends JFrame {
     }
 
     private void signin() {
-        String Usuario = this.login.obtenerUsuario();
-        String Contrasenna = this.login.obtenerContrasenna();
 
-        String contrase=new String (txtContrasena.getPassword());
+        String usuario = txtUsuario.getText();
+        String contrase = new String (txtContrasena.getPassword());
 
-        if(txtUsuario.getText().equals(Usuario) && contrase.equals(Contrasenna)){
-            MenuUsuario menu = new MenuUsuario();
-            menu.setVisible(true);
-            dispose();
-        }else {
-            JOptionPane.showMessageDialog(this, "Usuario o Contraseña no válidos");
+        if(
+                (usuario.equals("Ingrese su nombre de usuario") || contrase.equals("********")) ||
+                ( usuario.equals("") || contrase.equals(""))
+        ){
+            JOptionPane.showMessageDialog(this, "por favor rellene todos los campos");
+        } else {
+
+            Usuario usuarioGuardado = this.login.obtenerUsuario(usuario);
+            String contrasennaGuardada = usuarioGuardado.getPassword();
+
+
+
+
+
+            boolean passwordEquals = ValidatePasswords.matchPassword(contrase,contrasennaGuardada);
+
+
+            if(usuario.equals(usuarioGuardado.getUsuario()) && passwordEquals ){
+                MenuUsuario menu = new MenuUsuario();
+                menu.setVisible(true);
+                dispose();
+            }else {
+                JOptionPane.showMessageDialog(this, "Usuario o Contraseña no válidos");
+            }
         }
     }
     private void headerMousePressed(java.awt.event.MouseEvent evt) {

@@ -1,12 +1,7 @@
 package com.latam.alura.hotel.view;
-import java.awt.EventQueue;
+import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import java.awt.Panel;
-import java.awt.Color;
-import java.awt.SystemColor;
-import java.awt.Font;
-import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -39,7 +34,10 @@ public class MenuPrincipal extends JFrame {
      * Create the frame.
      */
     public MenuPrincipal() {
-        setIconImage(Toolkit.getDefaultToolkit().getImage(MenuPrincipal.class.getResource("/img/aH-40px.png")));
+        Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/img/aH-40px.png"));
+        this.setIconImage(icon);
+        System.out.println(icon);
+
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setBounds(100, 100, 910, 537);
         contentPane = new JPanel();
@@ -76,7 +74,7 @@ public class MenuPrincipal extends JFrame {
         panel.add(panel_1);
         panel_1.setLayout(null);
 
-        JLabel lblCopyR = new JLabel("Desarrollado por Fulanita de Tal © 2023");
+        JLabel lblCopyR = new JLabel("Desarrollado por Cristian Barajas © 2023");
         lblCopyR.setBounds(315, 11, 284, 19);
         lblCopyR.setForeground(new Color(240, 248, 255));
         lblCopyR.setFont(new Font("Roboto", Font.PLAIN, 16));
@@ -107,7 +105,14 @@ public class MenuPrincipal extends JFrame {
         btnexit.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.exit(0);
+                int result = JOptionPane.showConfirmDialog(
+                        new JFrame(),
+                        "¿Desea salir de la aplicacion?",
+                        "pregunta",
+                        JOptionPane.YES_NO_OPTION);
+                if(result == 0) {
+                    System.exit(0);
+                }
             }
             @Override
             public void mouseEntered(MouseEvent e) {

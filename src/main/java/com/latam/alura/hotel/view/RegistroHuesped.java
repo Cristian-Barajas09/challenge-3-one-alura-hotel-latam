@@ -148,7 +148,7 @@ public class RegistroHuesped extends JFrame {
         txtFechaN.setDateFormatString("yyyy-MM-dd");
         contentPane.add(txtFechaN);
 
-        txtNacionalidad = new JComboBox();
+        txtNacionalidad = new JComboBox<>();
         txtNacionalidad.setBounds(560, 350, 289, 36);
         txtNacionalidad.setBackground(SystemColor.text);
         txtNacionalidad.setFont(new Font("Roboto", Font.PLAIN, 16));
