@@ -141,6 +141,7 @@ public class ReservasView extends JFrame {
         panel.add(panel_1);
         panel_1.setLayout(null);
 
+
         JLabel logo = new JLabel("");
         logo.setBounds(197, 68, 104, 107);
         panel_1.add(logo);
@@ -216,6 +217,7 @@ public class ReservasView extends JFrame {
                 headerMousePressed(e);
             }
         });
+
         header.setLayout(null);
         header.setBackground(Color.WHITE);
         panel.add(header);
@@ -326,6 +328,7 @@ public class ReservasView extends JFrame {
                 if (ReservasView.txtFechaEntrada.getDate() != null && ReservasView.txtFechaSalida.getDate() != null) {
                     RegistroHuesped registro = new RegistroHuesped();
                     registro.setVisible(true);
+                    dispose();
                 } else {
                     JOptionPane.showMessageDialog(new JFrame(), "Debes llenar todos los campos.");
                 }

@@ -282,13 +282,18 @@ public class RegistroHuesped extends JFrame {
 
         JPanel btnexit = new JPanel();
         btnexit.setBounds(857, 0, 53, 36);
-        contentPane.add(btnexit);
+
         btnexit.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                MenuPrincipal principal = new MenuPrincipal();
-                principal.setVisible(true);
-                dispose();
+                int result = JOptionPane.showConfirmDialog(
+                        new JFrame(),
+                        "¿Desea salir de la aplicacion?",
+                        "pregunta",
+                        JOptionPane.YES_NO_OPTION);
+                if(result == 0) {
+                    System.exit(0);
+                }
             }
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -297,19 +302,24 @@ public class RegistroHuesped extends JFrame {
             }
             @Override
             public void mouseExited(MouseEvent e) {
-                btnexit.setBackground(Color.white);
-                labelExit.setForeground(Color.black);
+                btnexit.setBackground(new Color(12, 138, 199));
+                labelExit.setForeground(Color.white);
             }
         });
         btnexit.setLayout(null);
         btnexit.setBackground(Color.white);
+        header.add(btnexit);
+
 
         labelExit = new JLabel("X");
         labelExit.setBounds(0, 0, 53, 36);
-        btnexit.add(labelExit);
+
         labelExit.setHorizontalAlignment(SwingConstants.CENTER);
         labelExit.setForeground(SystemColor.black);
         labelExit.setFont(new Font("Roboto", Font.PLAIN, 18));
+
+        btnexit.add(labelExit);
+
     }
 
 
@@ -324,5 +334,7 @@ public class RegistroHuesped extends JFrame {
         int y = evt.getYOnScreen();
         this.setLocation(x - xMouse, y - yMouse);
     }
+
+
 
 }
