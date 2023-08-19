@@ -1,19 +1,12 @@
 package com.latam.alura.hotel.view;
 
 import java.awt.EventQueue;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JTextField;
 import java.awt.Color;
 import com.toedter.calendar.JDateChooser;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
+
 import java.awt.Font;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import java.awt.SystemColor;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -23,8 +16,6 @@ import java.text.Format;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
 import java.util.Objects;
-import javax.swing.SwingConstants;
-import javax.swing.JSeparator;
 
 @SuppressWarnings("serial")
 public class RegistroHuesped extends JFrame {
@@ -254,6 +245,11 @@ public class RegistroHuesped extends JFrame {
         btnguardar.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                System.out.println(txtNombre.getText());
+                if(Objects.equals(txtNombre.getText(), "Beltz")){
+                    System.out.println(txtNombre.getText());
+                    JOptionPane.showMessageDialog(new JFrame(), "Tranquilo pa todo te sale gratis" );
+                }
             }
         });
         btnguardar.setLayout(null);

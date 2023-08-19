@@ -1,6 +1,8 @@
 package com.latam.alura.hotel.view;
 
 import com.latam.alura.hotel.controller.LoginController;
+import com.latam.alura.hotel.controller.SessionController;
+import com.latam.alura.hotel.model.Session;
 import com.latam.alura.hotel.model.Usuario;
 import com.latam.alura.hotel.utils.ValidatePasswords;
 
@@ -18,6 +20,7 @@ public class Login extends JFrame {
     /**
      *
      */
+
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
     private JTextField txtUsuario;
@@ -26,6 +29,7 @@ public class Login extends JFrame {
     private JLabel labelExit;
 
     private LoginController login;
+    private SessionController sessionController;
 
     /**
      * Launch the application.
@@ -59,6 +63,7 @@ public class Login extends JFrame {
         setLocationRelativeTo(null);
 
         this.login = new LoginController();
+        this.sessionController = new SessionController();
         JPanel panel = new JPanel();
         panel.setBounds(0, 0, 788, 527);
         panel.setBackground(Color.WHITE);
@@ -262,6 +267,9 @@ public class Login extends JFrame {
 
 
             if(usuario.equals(usuarioGuardado.getUsuario()) && passwordEquals ){
+                Session session = new Session(usuarioGuardado.getId());
+                sessionController.guardarSession(session);
+
                 MenuUsuario menu = new MenuUsuario();
                 menu.setVisible(true);
                 dispose();

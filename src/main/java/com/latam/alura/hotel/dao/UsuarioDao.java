@@ -86,7 +86,4 @@ public class UsuarioDao {
 
     }
 
-    public void guardarSession(Usuario user) {
-
-    }
 }

@@ -17,7 +17,5 @@ public class LoginController {
         return this.usuarioDao.obtenerUsuario(usuario);
     }
 
-    public void setSession(Usuario user){
-        this.usuarioDao.guardarSession(user);
-    }
+
 }

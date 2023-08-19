@@ -1,12 +1,11 @@
 package com.latam.alura.hotel.view;
 
+import com.latam.alura.hotel.controller.LoginController;
+import com.latam.alura.hotel.controller.SessionController;
+
 import java.awt.EventQueue;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
@@ -14,13 +13,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
-import javax.swing.SwingConstants;
 import java.awt.event.MouseMotionAdapter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.awt.SystemColor;
 import java.util.Objects;
-import javax.swing.JSeparator;
 
 @SuppressWarnings("serial")
 public class MenuUsuario extends JFrame {
@@ -29,6 +26,8 @@ public class MenuUsuario extends JFrame {
     int xMouse, yMouse;
     private JLabel labelExit;
     private JLabel labelRegistro;
+
+    private SessionController sessionController;
 
     /**
      * Launch the application.
@@ -50,9 +49,11 @@ public class MenuUsuario extends JFrame {
      * Create the frame.
      */
     public MenuUsuario() {
-//        setIconImage(Toolkit.getDefaultToolkit().getImage(MenuUsuario.class.getResource("/imagenes/aH-40px.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/img/aH-40px.png")));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 944, 609);
+
+
         contentPane = new JPanel();
         contentPane.setBackground(Color.WHITE);
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -147,6 +148,40 @@ public class MenuUsuario extends JFrame {
         lblBusquedaDeReservas.setFont(new Font("Roboto", Font.PLAIN, 18));
         btnBusqueda.add(lblBusquedaDeReservas);
 
+        JPanel btnCerrarSesion = new JPanel();
+        btnCerrarSesion.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnCerrarSesion.setBackground(new Color(118, 187, 223));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btnCerrarSesion.setBackground(new Color(12, 138, 199));
+            }
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                sessionController = new SessionController();
+                sessionController.eliminarSesion();
+                MenuPrincipal menuPrincipal = new MenuPrincipal();
+                menuPrincipal.setVisible(true);
+                dispose();
+            }
+        });
+        btnCerrarSesion.setBounds(0, 369, 257, 56);
+        btnCerrarSesion.setBackground(new Color(12, 138, 199));
+        panelMenu.add(btnCerrarSesion);
+        btnCerrarSesion.setLayout(null);
+
+        JLabel lblCerrarSesion = new JLabel("Cerrar Sesión");
+        lblCerrarSesion.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource("/img/cerrar-sesion 32-px.png"))));
+        lblCerrarSesion.setBounds(27, 11, 200, 34);
+        lblCerrarSesion.setHorizontalAlignment(SwingConstants.LEFT);
+        lblCerrarSesion.setForeground(Color.WHITE);
+        lblCerrarSesion.setFont(new Font("Roboto", Font.PLAIN, 18));
+        btnCerrarSesion.add(lblCerrarSesion);
+
+
+
         JSeparator separator = new JSeparator();
         separator.setBounds(26, 219, 201, 2);
         panelMenu.add(separator);
@@ -159,7 +194,15 @@ public class MenuUsuario extends JFrame {
         btnexit.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.exit(0);
+
+                int result = JOptionPane.showConfirmDialog(
+                        new JFrame(),
+                        "¿Desea salir de la aplicacion?",
+                        "pregunta",
+                        JOptionPane.YES_NO_OPTION);
+                if(result == 0) {
+                    System.exit(0);
+                }
             }
             @Override
             public void mouseEntered(MouseEvent e) {
