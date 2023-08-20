@@ -21,7 +21,7 @@ public class TestReservaDeHuesped {
                 Date.valueOf("2023-08-30"),
                 Date.valueOf("2023-09-5"),
                 10,
-                FormPago.DINERO_EN_EFECTIVO
+                "Dinero en efectivo"
         );
 
         Long result =  reservaDao.guardar(reserva);

@@ -13,6 +13,8 @@ import javax.swing.JTextField;
 
 
 import com.latam.alura.hotel.controller.ReservaController;
+import com.latam.alura.hotel.model.Reserva;
+import com.latam.alura.hotel.utils.ConvertDates;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Font;
 import javax.swing.JComboBox;
@@ -27,7 +29,9 @@ import java.beans.PropertyChangeEvent;
 
 
 import java.math.BigDecimal;
-import java.util.Date;
+
+
+import java.sql.Date;
 import java.util.Objects;
 
 import javax.swing.JSeparator;
@@ -261,7 +265,7 @@ public class ReservasView extends JFrame {
 
         //Campos que guardaremos en la base de datos
         txtFechaEntrada = new JDateChooser();
-        txtFechaEntrada.setDate(new Date());
+        txtFechaEntrada.setDate(new java.util.Date());
         txtFechaEntrada.getCalendarButton().setBackground(SystemColor.textHighlight);
         txtFechaEntrada.getCalendarButton().setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource("/img/icon-reservas.png"))));
         txtFechaEntrada.getCalendarButton().setFont(new Font("Roboto", Font.PLAIN, 12));
@@ -284,8 +288,8 @@ public class ReservasView extends JFrame {
         txtFechaSalida.addPropertyChangeListener(new PropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent evt) {
                 if (txtFechaEntrada.getDate() != null && txtFechaSalida.getDate() != null){
-                    Date primeraFecha = txtFechaEntrada.getDate();
-                    Date segundaFecha = txtFechaSalida.getDate();
+                    java.util.Date primeraFecha = txtFechaEntrada.getDate();
+                    java.util.Date segundaFecha = txtFechaSalida.getDate();
 
                     BigDecimal valor =  reservaController.calcularTotal(primeraFecha,segundaFecha);
 
@@ -326,6 +330,19 @@ public class ReservasView extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (ReservasView.txtFechaEntrada.getDate() != null && ReservasView.txtFechaSalida.getDate() != null) {
+
+                    Date fechaEntradaDate = Date.valueOf(ConvertDates.convertDateToLocalDate(txtFechaEntrada.getDate()));
+                    Date fechaSalidaDate =  Date.valueOf(ConvertDates.convertDateToLocalDate(txtFechaSalida.getDate()));
+
+
+                    Reserva reserva = new Reserva(
+                            fechaEntradaDate,
+                            fechaSalidaDate,
+                            Double.parseDouble(txtValor.getText().replace("$", "")),
+                            txtFormaPago.getItemAt(txtFormaPago.getSelectedIndex()));
+
+                    reservaController.guardarReserva(reserva);
+
                     RegistroHuesped registro = new RegistroHuesped();
                     registro.setVisible(true);
                     dispose();

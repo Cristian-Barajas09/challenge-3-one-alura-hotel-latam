@@ -4,6 +4,11 @@ import java.awt.EventQueue;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.Color;
+
+import com.latam.alura.hotel.controller.HuespedController;
+import com.latam.alura.hotel.controller.ReservaController;
+import com.latam.alura.hotel.model.Huesped;
+import com.latam.alura.hotel.utils.ConvertDates;
 import com.toedter.calendar.JDateChooser;
 
 import java.awt.Font;
@@ -12,9 +17,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.sql.Date;
 import java.text.Format;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Objects;
 
 @SuppressWarnings("serial")
@@ -30,6 +38,7 @@ public class RegistroHuesped extends JFrame {
     private JLabel labelExit;
     private JLabel labelAtras;
     int xMouse, yMouse;
+    private HuespedController huespedController;
 
     /**
      * Launch the application.
@@ -83,7 +92,7 @@ public class RegistroHuesped extends JFrame {
         header.setOpaque(false);
         header.setBounds(0, 0, 910, 36);
         contentPane.add(header);
-
+        this.huespedController = new HuespedController();
         JPanel btnAtras = new JPanel();
         btnAtras.addMouseListener(new MouseAdapter() {
             @Override
@@ -197,6 +206,7 @@ public class RegistroHuesped extends JFrame {
         contentPane.add(lblNumeroReserva);
 
         txtNreserva = new JTextField();
+        txtNreserva.setText("" + huespedController.getReserva());
         txtNreserva.setFont(new Font("Roboto", Font.PLAIN, 16));
         txtNreserva.setBounds(560, 495, 285, 33);
         txtNreserva.setColumns(10);
@@ -247,9 +257,29 @@ public class RegistroHuesped extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 System.out.println(txtNombre.getText());
                 if(Objects.equals(txtNombre.getText(), "Beltz")){
-                    System.out.println(txtNombre.getText());
+
                     JOptionPane.showMessageDialog(new JFrame(), "Tranquilo pa todo te sale gratis" );
                 }
+
+                String nacionalidad = String.valueOf(txtNacionalidad.getItemAt(txtNacionalidad.getSelectedIndex()));
+
+                Date date =  Date.valueOf(ConvertDates.convertDateToLocalDate(txtFechaN.getDate()));
+
+
+                Huesped huesped = new Huesped(
+                        txtNombre.getText(),
+                        txtApellido.getText(),
+                        date,
+                        nacionalidad,
+                        txtTelefono.getText()
+                );
+
+                huespedController.guardar(huesped);
+
+                MenuUsuario usuario = new MenuUsuario();
+                usuario.setVisible(true);
+                dispose();
+
             }
         });
         btnguardar.setLayout(null);

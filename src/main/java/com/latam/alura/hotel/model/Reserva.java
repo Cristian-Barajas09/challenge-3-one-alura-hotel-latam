@@ -1,18 +1,19 @@
 package com.latam.alura.hotel.model;
 
 
-import com.latam.alura.hotel.Enums.FormPago;
+
 
 import java.sql.Date;
+
 
 public class Reserva {
     private Long id;
     private Date fecha_entrante;
     private Date fecha_salida;
     private double valor;
-    private FormPago forma_pago;
+    private String forma_pago;
 
-    public Reserva( Date fecha_entrante, Date fecha_salida, double valor, FormPago forma_pago) {
+    public Reserva( Date fecha_entrante, Date fecha_salida, double valor, String forma_pago) {
 
         this.fecha_entrante = fecha_entrante;
         this.fecha_salida = fecha_salida;
@@ -55,10 +56,10 @@ public class Reserva {
     }
 
     public String getForma_pago() {
-        return forma_pago.toString();
+        return forma_pago;
     }
 
-    public void setForma_pago(FormPago forma_pago) {
+    public void setForma_pago(String forma_pago) {
         this.forma_pago = forma_pago;
     }
 }

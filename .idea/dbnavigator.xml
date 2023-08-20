@@ -17,7 +17,7 @@
     </connection>
     <connection id="d3640566-265d-4df3-a87a-764809ac4c5a">
       <console name="Connection 1" type="STANDARD" schema="mysql" session="Main"><![CDATA[--SELECT * FROM hotel_alura.reservas;
-SELECT * FROM hotel_alura.session;]]></console>
+SELECT * FROM hotel_alura.reservas;]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">

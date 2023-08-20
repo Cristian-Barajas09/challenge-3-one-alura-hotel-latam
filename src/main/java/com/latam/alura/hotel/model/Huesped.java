@@ -1,5 +1,6 @@
 package com.latam.alura.hotel.model;
 
+import java.time.LocalDate;
 import java.sql.Date;
 
 
@@ -13,6 +14,16 @@ public class Huesped {
 
     private Long reservaId;
 
+    public Huesped(Long id ,String nombre, String apellido, Date f_nacimiento, String nacionalidad, String telefono,Long reservaId) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.f_nacimiento = f_nacimiento;
+        this.nacionalidad = nacionalidad;
+        this.telefono = telefono;
+        this.reservaId = reservaId;
+    }
+
     public Huesped(String nombre, String apellido, Date f_nacimiento, String nacionalidad, String telefono,Long reservaId) {
         this.nombre = nombre;
         this.apellido = apellido;
@@ -20,6 +31,14 @@ public class Huesped {
         this.nacionalidad = nacionalidad;
         this.telefono = telefono;
         this.reservaId = reservaId;
+    }
+
+    public Huesped(String nombre, String apellido, Date f_nacimiento, String nacionalidad, String telefono) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.f_nacimiento = f_nacimiento;
+        this.nacionalidad = nacionalidad;
+        this.telefono = telefono;
     }
 
     public Long getId() {
