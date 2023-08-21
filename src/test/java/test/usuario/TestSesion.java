@@ -12,7 +12,7 @@ import java.sql.Connection;
 
 public class TestSesion {
     public static void main(String[] args) {
-
+        crearSesion();
     }
 
     public static void eliminarSesion(){
@@ -21,7 +21,7 @@ public class TestSesion {
     }
 
     public static void crearSesion(){
-        Session session = new Session(2L);
+        Session session = new Session(1L);
 
         SessionController sessionController = new SessionController();
         sessionController.guardarSession(session);

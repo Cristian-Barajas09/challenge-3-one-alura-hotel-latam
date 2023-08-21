@@ -18,7 +18,7 @@ public class TestCrearUsuario {
         Connection con = new ConexionFactory().recuperaConexion();
         String password = ValidatePasswords.encryptPassword("300804");
 
-        Usuario usuarioTest = new Usuario("Cristian","Barajas","CristianB19",password);
+        Usuario usuarioTest = new Usuario("Cristian","Barajas","cristianb19",password);
 
 
 

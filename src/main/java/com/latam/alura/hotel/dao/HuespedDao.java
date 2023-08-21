@@ -220,7 +220,8 @@ public class HuespedDao {
     }
 
     public int eliminar(int id) {
-        try(this.con) {
+        Connection con = new ConexionFactory().recuperaConexion();
+        try(con) {
             final PreparedStatement statement = con.prepareStatement("DELETE FROM HUESPEDES WHERE ID = ?");
             try(statement) {
                 statement.setInt(1, id);

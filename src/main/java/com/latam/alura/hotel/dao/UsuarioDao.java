@@ -38,8 +38,8 @@ public class UsuarioDao {
 
            }
        }catch (SQLException e){
-           e.printStackTrace();
-           throw new RuntimeException();
+
+           throw new RuntimeException(e);
        }
 
        return user;
@@ -61,8 +61,8 @@ public class UsuarioDao {
                con.commit();
            }
        }catch (SQLException err) {
-           err.printStackTrace();
-           throw new RuntimeException();
+
+           throw new RuntimeException(err);
        }
 
     }
@@ -86,4 +86,72 @@ public class UsuarioDao {
 
     }
 
+    public Usuario obtenerUsuarioPorId(long id) {
+        Usuario user = new Usuario();
+        Connection con = new ConexionFactory().recuperaConexion();
+
+        try(con){
+            final PreparedStatement statement = con.prepareStatement(
+                    "SELECT ID,NOMBRE,APELLIDO,USUARIO,PASSWORD FROM USERS WHERE ID = ?"
+            );
+            try(statement){
+                statement.setLong(1,id);
+                statement.execute();
+
+                ResultSet resultSet = statement.getResultSet();
+
+                while (resultSet.next()){
+                    user.setId(resultSet.getLong("ID"));
+                    user.setNombre(resultSet.getString("NOMBRE"));
+                    user.setApellido(resultSet.getString("APELLIDO"));
+                    user.setUsuario(resultSet.getString("USUARIO"));
+                    user.setPassword(resultSet.getString("PASSWORD"));
+                }
+
+
+            }
+        }catch (SQLException e){
+
+            throw new RuntimeException(e);
+        }
+
+        return user;
+    }
+
+    public int actualizar(Usuario usuario) {
+        final Connection con = new ConexionFactory().recuperaConexion();
+        try (con) {
+            final PreparedStatement statement = con.prepareStatement(
+                    "UPDATE USERS SET NOMBRE=?,APELLIDO=?,USUARIO=?,PASSWORD=? WHERE ID = ?"
+            );
+            try (statement) {
+                statement.setString(1,usuario.getNombre());
+                statement.setString(2,usuario.getApellido());
+                statement.setString(3,usuario.getUsuario());
+                statement.setString(4,usuario.getPassword());
+                statement.setLong(5,usuario.getId());
+
+
+                statement.execute();
+
+                return statement.getUpdateCount();
+            }
+        } catch (SQLException err) {
+            throw new RuntimeException(err);
+        }
+    }
+
+    public int delete(Long id){
+        Connection con = new ConexionFactory().recuperaConexion();
+        try(con) {
+            final PreparedStatement statement = con.prepareStatement("DELETE FROM USERS WHERE ID = ?");
+            try(statement) {
+                statement.setLong(1, id);
+                statement.execute();
+                return statement.getUpdateCount();
+            }
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
 }

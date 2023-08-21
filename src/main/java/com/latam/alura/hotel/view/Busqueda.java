@@ -4,13 +4,15 @@ import com.latam.alura.hotel.controller.HuespedController;
 import com.latam.alura.hotel.controller.ReservaController;
 import com.latam.alura.hotel.model.Huesped;
 import com.latam.alura.hotel.model.Reserva;
+import com.toedter.calendar.JCalendar;
 
 import java.awt.EventQueue;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableColumn;
 import java.awt.Color;
-import java.awt.SystemColor;
 import java.awt.Font;
 import java.awt.event.*;
 import java.sql.Date;
@@ -18,7 +20,6 @@ import java.util.List;
 import java.awt.Toolkit;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Stack;
 
 @SuppressWarnings("serial")
 public class Busqueda extends JFrame {
@@ -27,6 +28,7 @@ public class Busqueda extends JFrame {
     private JTextField txtBuscar;
     private JTable tbHuespedes;
     private JTable tbReservas;
+    private String[] formaPago = new String[] {"Tarjeta de Crédito", "Tarjeta de Débito", "Dinero en efectivo"};
     private DefaultTableModel modelo;
     private DefaultTableModel modeloHuesped;
     private JLabel labelAtras;
@@ -34,6 +36,80 @@ public class Busqueda extends JFrame {
     int xMouse, yMouse;
     private ReservaController reservaController;
     private HuespedController huespedController;
+
+    private final String[] nacionalidad = new String[] {
+            "afgano-afgana",
+            "alemán-",
+            "alemana",
+            "árabe-árabe",
+            "argentino-argentina",
+            "australiano-australiana",
+            "belga-belga",
+            "boliviano-boliviana",
+            "brasileño-brasileña",
+            "camboyano-camboyana",
+            "canadiense-canadiense",
+            "chileno-chilena",
+            "chino-china",
+            "colombiano-colombiana",
+            "coreano-coreana",
+            "costarricense-costarricense",
+            "cubano-cubana",
+            "danés-danesa",
+            "ecuatoriano-ecuatoriana",
+            "egipcio-egipcia",
+            "salvadoreño-salvadoreña",
+            "escocés-escocesa",
+            "español-española",
+            "estadounidense-estadounidense",
+            "estonio-estonia",
+            "etiope-etiope",
+            "filipino-filipina",
+            "finlandés-finlandesa",
+            "francés-francesa",
+            "galés-galesa",
+            "griego-griega",
+            "guatemalteco-guatemalteca",
+            "haitiano-haitiana",
+            "holandés-holandesa",
+            "hondureño-hondureña",
+            "indonés-indonesa",
+            "inglés-inglesa",
+            "iraquí-iraquí",
+            "iraní-iraní",
+            "irlandés-irlandesa",
+            "israelí-israelí",
+            "italiano-italiana",
+            "japonés-japonesa",
+            "jordano-jordana",
+            "laosiano-laosiana",
+            "letón-letona",
+            "letonés-letonesa",
+            "malayo-malaya",
+            "marroquí-marroquí",
+            "mexicano-mexicana",
+            "nicaragüense-nicaragüense",
+            "noruego-noruega",
+            "neozelandés-neozelandesa",
+            "panameño-panameña",
+            "paraguayo-paraguaya",
+            "peruano-peruana",
+            "polaco-polaca",
+            "portugués-portuguesa",
+            "puertorriqueño-puertorriqueño",
+            "dominicano-dominicana",
+            "rumano-rumana",
+            "ruso-rusa",
+            "sueco-sueca",
+            "suizo-suiza",
+            "tailandés-tailandesa",
+            "taiwanes-taiwanesa",
+            "turco-turca",
+            "ucraniano-ucraniana",
+            "uruguayo-uruguaya",
+            "venezolano-venezolana",
+            "vietnamita-vietnamita"
+    };
 
     /**
      * Launch the application.
@@ -101,7 +177,15 @@ public class Busqueda extends JFrame {
         modelo.addColumn("Valor");
         modelo.addColumn("Forma de Pago");
 
+        JComboBox<String> formaPagoCombo = new JComboBox<>(formaPago);
+        TableColumn tableColumn1 = this.tbReservas.getColumnModel().getColumn(4);
+        TableCellEditor tce1 = new DefaultCellEditor(formaPagoCombo);
+        tableColumn1.setCellEditor(tce1);
+
+
         cargarTablaReservas();
+
+
 
         JScrollPane scroll_table = new JScrollPane(tbReservas);
         panel.addTab("Reservas", new ImageIcon(Objects.requireNonNull(getClass().getResource("/img/reservado.png"))), scroll_table, null);
@@ -112,6 +196,7 @@ public class Busqueda extends JFrame {
         tbHuespedes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tbHuespedes.setFont(new Font("Roboto", Font.PLAIN, 16));
         modeloHuesped = (DefaultTableModel) tbHuespedes.getModel();
+
         modeloHuesped.addColumn("Número de Huesped");
         modeloHuesped.addColumn("Nombre");
         modeloHuesped.addColumn("Apellido");
@@ -119,6 +204,14 @@ public class Busqueda extends JFrame {
         modeloHuesped.addColumn("Nacionalidad");
         modeloHuesped.addColumn("Telefono");
         modeloHuesped.addColumn("Número de Reserva");
+
+        JComboBox<String> jComboBox = new JComboBox<>(nacionalidad);
+        TableColumn tableColumn = this.tbHuespedes.getColumnModel().getColumn(4);
+        TableCellEditor tce = new DefaultCellEditor(jComboBox);
+        tableColumn.setCellEditor(tce);
+
+        JCalendar fechaNacimiento = new JCalendar();
+        TableColumn tableColumn2 = this.tbHuespedes.getColumnModel().getColumn(3);
 
         cargarTablaHuespedes();
         JScrollPane scroll_tableHuespedes = new JScrollPane(tbHuespedes);
@@ -298,8 +391,8 @@ public class Busqueda extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 modificar();
-                cargarTablaHuespedes();
-                cargarTablaReservas();
+
+
             }
         });
 
@@ -369,10 +462,10 @@ public class Busqueda extends JFrame {
                     int CantidadEliminada;
                     CantidadEliminada = this.huespedController.eliminar(id);
 
-                    modelo.removeRow(tbHuespedes.getSelectedRow());
+                    modeloHuesped.removeRow(tbHuespedes.getSelectedRow());
 
-                    JOptionPane.showMessageDialog(this,CantidadEliminada + " Item eliminado con éxito!");
-                }, () -> JOptionPane.showMessageDialog(this, "Por favor, elije un item"));
+                    JOptionPane.showMessageDialog(this,CantidadEliminada + " huesped eliminado con éxito!");
+                }, () -> JOptionPane.showMessageDialog(this, "Por favor, elije un huesped"));
     }
 
     private void modificar(){
@@ -384,10 +477,12 @@ public class Busqueda extends JFrame {
         }
 
         if(!tieneFilaElegidaReserva()){
-
             modificarReserva();
+            cargarTablaReservas();
         } else {
-            modificarHuesped();
+            this.modificarHuesped();
+            cargarTablaHuespedes();
+
         }
 
     }
@@ -420,10 +515,11 @@ public class Busqueda extends JFrame {
     private void modificarReserva() {
         Optional.ofNullable(this.modelo.getValueAt(tbReservas.getSelectedRow(), tbReservas.getSelectedColumn()))
                 .ifPresentOrElse(fila -> {
-                    Date fEntrada =  Date.valueOf(modelo.getValueAt(tbReservas.getSelectedRow(), 0).toString());
-                    Date fSalida = Date.valueOf(modelo.getValueAt(tbReservas.getSelectedRow(), 1).toString());
-                    double valor = Double.parseDouble( modelo.getValueAt(tbReservas.getSelectedRow(), 2).toString());
-                    String formaDePago =(String)  modelo.getValueAt(tbReservas.getSelectedRow(),3);
+                    Long id = Long.parseLong(modelo.getValueAt(tbReservas.getSelectedRow(), 0).toString());
+                    Date fEntrada =  Date.valueOf(modelo.getValueAt(tbReservas.getSelectedRow(), 1).toString());
+                    Date fSalida = Date.valueOf(modelo.getValueAt(tbReservas.getSelectedRow(), 2).toString());
+                    double valor = Double.parseDouble( modelo.getValueAt(tbReservas.getSelectedRow(), 3).toString());
+                    String formaDePago =(String)  modelo.getValueAt(tbReservas.getSelectedRow(),4);
 
 //
 
@@ -432,10 +528,10 @@ public class Busqueda extends JFrame {
                     Reserva reserva = new Reserva(
                             fEntrada,fSalida,valor,formaDePago
                     );
+                    reserva.setId(id);
 
 
                     cantidadAfectada = this.reservaController.modificar(reserva);
-                    System.out.println(cantidadAfectada);
                     JOptionPane.showMessageDialog(this,cantidadAfectada + " reserva actualizado con éxito!");
                 }, () -> JOptionPane.showMessageDialog(this, "Por favor, elije una reserva"));
     }
@@ -452,7 +548,10 @@ public class Busqueda extends JFrame {
 
         modeloHuesped.setRowCount(0);
 
+
         var huespedes = this.huespedController.obtenerHuespedes();
+
+
 
         huespedes.forEach(huesped -> this.modeloHuesped.addRow(new Object[]{
                 huesped.getId(),
@@ -463,6 +562,9 @@ public class Busqueda extends JFrame {
                 huesped.getTelefono(),huesped.getReservaId()
         }));
     }
+
+
+
     private void cargarTablaHuespedesResult(List<Huesped> huespedList) {
         modeloHuesped.setRowCount(0);
 

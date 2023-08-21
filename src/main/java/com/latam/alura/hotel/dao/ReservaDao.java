@@ -153,7 +153,8 @@ public class ReservaDao {
     }
 
     public int eliminar(int id) {
-        try(this.con) {
+        Connection con = new ConexionFactory().recuperaConexion();
+        try(con) {
             final PreparedStatement statement = con.prepareStatement("DELETE FROM RESERVAS WHERE ID = ?");
             try(statement) {
                 statement.setInt(1, id);
@@ -164,4 +165,5 @@ public class ReservaDao {
             throw new RuntimeException(e);
         }
     }
+
 }

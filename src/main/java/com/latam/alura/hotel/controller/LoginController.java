@@ -18,4 +18,20 @@ public class LoginController {
     }
 
 
+    public void guardar(Usuario usuario1) {
+
+        this.usuarioDao.guardarUsuario(usuario1);
+
+    }
+
+    public Usuario obtenerUsuarioPorId(Long idUsuario) {
+        return this.usuarioDao.obtenerUsuarioPorId(idUsuario);
+    }
+
+    public int actualizar(Usuario usuario) {
+        return this.usuarioDao.actualizar(usuario);
+    }
+    public int eliminar(Long id){
+        return this.usuarioDao.delete(id);
+    }
 }

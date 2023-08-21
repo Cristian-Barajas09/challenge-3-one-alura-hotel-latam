@@ -13,5 +13,4 @@ public class ValidatePasswords {
     public static boolean matchPassword(String password,String savePassword){
         return BCrypt.checkpw(password,savePassword);
     }
-
 }

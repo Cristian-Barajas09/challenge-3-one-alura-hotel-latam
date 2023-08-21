@@ -12,8 +12,6 @@ CREATE TABLE USERS(
 );
 
 
-
-
 CREATE TABLE huespedes(
     ID INT AUTO_INCREMENT NOT NULL,
     NOMBRE VARCHAR(50) NOT NULL,
@@ -44,3 +42,15 @@ CREATE TABLE SESSION(
     CREATE_AT DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (ID_USUARIO) REFERENCES USERS(ID)
 );
+
+CREATE TABLE PRECIO_RESERVAS(
+    ID INT AUTO_INCREMENT NOT NULL,
+    precio FLOAT NOT NULL,
+    PRIMARY KEY(ID)
+
+);
+
+INSERT INTO hotel_alura.precio_reservas (precio_reservas.precio) values (12);
+
+select * from hotel_alura.precio_reservas;
+

@@ -48,6 +48,7 @@ public class ReservasView extends JFrame {
     public static JDateChooser txtFechaSalida;
     public static JComboBox<String> txtFormaPago;
     int xMouse, yMouse;
+    private String[] formaPago = new String[] {"Tarjeta de Crédito", "Tarjeta de Débito", "Dinero en efectivo"};
     private final JLabel labelExit;
     private final JLabel labelAtras;
 
@@ -320,7 +321,7 @@ public class ReservasView extends JFrame {
         txtFormaPago.setBackground(SystemColor.text);
         txtFormaPago.setBorder(new LineBorder(new Color(255, 255, 255), 1, true));
         txtFormaPago.setFont(new Font("Roboto", Font.PLAIN, 16));
-        txtFormaPago.setModel(new DefaultComboBoxModel<>(new String[] {"Tarjeta de Crédito", "Tarjeta de Débito", "Dinero en efectivo"}));
+        txtFormaPago.setModel(new DefaultComboBoxModel<>(formaPago));
         panel.add(txtFormaPago);
 
 
@@ -330,19 +331,32 @@ public class ReservasView extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (ReservasView.txtFechaEntrada.getDate() != null && ReservasView.txtFechaSalida.getDate() != null) {
-
-                    Date fechaEntradaDate = Date.valueOf(ConvertDates.convertDateToLocalDate(txtFechaEntrada.getDate()));
-                    Date fechaSalidaDate =  Date.valueOf(ConvertDates.convertDateToLocalDate(txtFechaSalida.getDate()));
-
+                    Date fechaEntradaDate = null;
+                    Date fechaSalidaDate = null;
+                    if(txtFechaEntrada.getDate() != null && txtFechaSalida.getDate() != null) {
+                       fechaEntradaDate = Date.valueOf(ConvertDates.convertDateToLocalDate(txtFechaEntrada.getDate()));
+                       fechaSalidaDate =  Date.valueOf(ConvertDates.convertDateToLocalDate(txtFechaSalida.getDate()));
+                    }
+                    double valor = Double.parseDouble(txtValor.getText().replace("$", ""));
+                    String pago =txtFormaPago.getItemAt(txtFormaPago.getSelectedIndex());
 
                     Reserva reserva = new Reserva(
                             fechaEntradaDate,
                             fechaSalidaDate,
-                            Double.parseDouble(txtValor.getText().replace("$", "")),
-                            txtFormaPago.getItemAt(txtFormaPago.getSelectedIndex()));
+                            valor,
+                            pago
+                    );
 
-                    reservaController.guardarReserva(reserva);
+                    try{
+                        reservaController.guardarReserva(reserva);
+                    } catch (RuntimeException err ){
+                        JOptionPane.showMessageDialog(new JFrame(),"a ocurrido un error");
+                        return;
+                    }
 
+
+                    JOptionPane.showMessageDialog(new JFrame(),"reserva guardada exitosamente");
+                    
                     RegistroHuesped registro = new RegistroHuesped();
                     registro.setVisible(true);
                     dispose();

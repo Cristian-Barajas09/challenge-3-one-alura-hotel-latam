@@ -4,7 +4,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 public class TestEncryptPassword {
     public static void main(String[] args) {
-        String mypassword = "mypassword";
+        String mypassword = "admin";
         String gensalt = BCrypt.gensalt(10);
 
         String newPassword = BCrypt.hashpw(mypassword,gensalt);

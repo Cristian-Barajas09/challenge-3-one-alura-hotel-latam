@@ -2,32 +2,34 @@ package com.latam.alura.hotel.view;
 
 import com.latam.alura.hotel.controller.LoginController;
 import com.latam.alura.hotel.controller.SessionController;
+import com.latam.alura.hotel.dao.ValorDao;
+import com.latam.alura.hotel.model.Usuario;
+import com.latam.alura.hotel.model.Valor;
 
-import java.awt.EventQueue;
+import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
-import java.awt.Toolkit;
 import java.awt.event.MouseMotionAdapter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.awt.SystemColor;
 import java.util.Objects;
 
 @SuppressWarnings("serial")
 public class MenuUsuario extends JFrame {
 
+    private final JPanel btnPerfil;
     private JPanel contentPane;
     int xMouse, yMouse;
     private JLabel labelExit;
     private JLabel labelRegistro;
 
     private SessionController sessionController;
+    private ValorDao valorDao;
+    private LoginController login ;
 
     /**
      * Launch the application.
@@ -53,7 +55,8 @@ public class MenuUsuario extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 944, 609);
 
-
+        login =  new LoginController();
+        sessionController = new SessionController();
         contentPane = new JPanel();
         contentPane.setBackground(Color.WHITE);
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -148,6 +151,76 @@ public class MenuUsuario extends JFrame {
         lblBusquedaDeReservas.setFont(new Font("Roboto", Font.PLAIN, 18));
         btnBusqueda.add(lblBusquedaDeReservas);
 
+        JPanel btnGuardarValor = new JPanel();
+        btnGuardarValor.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnGuardarValor.setBackground(new Color(118, 187, 223));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btnGuardarValor.setBackground(new Color(12, 138, 199));
+            }
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                String valor = JOptionPane.showInputDialog("ingrese el nuevo precio de las reservas");
+                valorDao = new ValorDao();
+
+                Valor valor1 = new Valor(Float.parseFloat(valor));
+
+                valorDao.guardar(valor1);
+            }
+        });
+        btnGuardarValor.setBounds(0, 369, 257, 56);
+        btnGuardarValor.setBackground(new Color(12, 138, 199));
+        panelMenu.add(btnGuardarValor);
+        btnGuardarValor.setLayout(null);
+
+        JLabel lblGuardarValor = new JLabel("Guardar valor");
+        lblGuardarValor.setBounds(27, 11, 200, 34);
+        lblGuardarValor.setHorizontalAlignment(SwingConstants.LEFT);
+        lblGuardarValor.setForeground(Color.WHITE);
+        lblGuardarValor.setFont(new Font("Roboto", Font.PLAIN, 18));
+        btnGuardarValor.add(lblGuardarValor);
+
+
+        JPanel btnCrearUsuario = new JPanel();
+        btnCrearUsuario.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnCrearUsuario.setBackground(new Color(118, 187, 223));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btnCrearUsuario.setBackground(new Color(12, 138, 199));
+            }
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                CrearUsuarioView frame = new CrearUsuarioView();
+                frame.setVisible(true);
+                dispose();
+            }
+        });
+        btnCrearUsuario.setBounds(0, 425, 257, 56);
+        btnCrearUsuario.setBackground(new Color(12, 138, 199));
+        panelMenu.add(btnCrearUsuario);
+        btnCrearUsuario.setLayout(null);
+
+        JLabel lblCrearUsuario = new JLabel("Crear Usuario");
+        lblCrearUsuario.setBounds(27, 11, 200, 34);
+        lblCrearUsuario.setHorizontalAlignment(SwingConstants.LEFT);
+        lblCrearUsuario.setForeground(Color.WHITE);
+        lblCrearUsuario.setFont(new Font("Roboto", Font.PLAIN, 18));
+        btnCrearUsuario.add(lblCrearUsuario);
+
+        btnCrearUsuario.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+            }
+        });
+
+
         JPanel btnCerrarSesion = new JPanel();
         btnCerrarSesion.addMouseListener(new MouseAdapter() {
             @Override
@@ -167,7 +240,7 @@ public class MenuUsuario extends JFrame {
                 dispose();
             }
         });
-        btnCerrarSesion.setBounds(0, 369, 257, 56);
+        btnCerrarSesion.setBounds(0, 481, 257, 56);
         btnCerrarSesion.setBackground(new Color(12, 138, 199));
         panelMenu.add(btnCerrarSesion);
         btnCerrarSesion.setLayout(null);
@@ -179,6 +252,9 @@ public class MenuUsuario extends JFrame {
         lblCerrarSesion.setForeground(Color.WHITE);
         lblCerrarSesion.setFont(new Font("Roboto", Font.PLAIN, 18));
         btnCerrarSesion.add(lblCerrarSesion);
+
+
+
 
 
 
@@ -248,9 +324,45 @@ public class MenuUsuario extends JFrame {
         String fecha = new SimpleDateFormat("dd/MM/yyyy").format(fechaActual); //formatear la fecha en una cadena
         labelFecha.setText("Hoy es " + fecha); //setear la representacion en cadena de la fecha
 
-        JLabel lblNewLabel = new JLabel("Bienvenido");
+
+
+        Usuario  usuario = login.obtenerUsuarioPorId(sessionController.obtenerSession().getIdUsuario());
+
+        MenuPerfil menuPerfil = new MenuPerfil(usuario);
+
+        btnPerfil = new JPanel();
+        btnPerfil.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnPerfil.setBackground(new Color(215, 215, 215));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {btnPerfil.setBackground(new Color(255, 255, 255));}
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                MenuPerfil menuPerfil = new MenuPerfil(usuario);
+                menuPerfil.setVisible(true);
+                dispose();
+            }
+        });
+        btnPerfil.setBounds(590, 65, 37, 36);
+        btnPerfil.setBackground(new Color(255, 255, 255));
+        btnPerfil.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        panelFecha.add(btnPerfil);
+        btnPerfil.setLayout(null);
+
+        JLabel lblPerfil = new JLabel();
+        lblPerfil.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource("/img/perfil-del-usuario.png"))));
+        lblPerfil.setBounds(5, 0, 33, 36);
+        lblPerfil.setHorizontalAlignment(SwingConstants.LEFT);
+        lblPerfil.setForeground(Color.WHITE);
+        lblPerfil.setFont(new Font("Roboto", Font.PLAIN, 18));
+        btnPerfil.add(lblPerfil);
+
+
+        JLabel lblNewLabel = new JLabel("Bienvenido " + usuario.getNombre());
         lblNewLabel.setFont(new Font("Roboto", Font.BOLD, 24));
-        lblNewLabel.setBounds(302, 234, 147, 46);
+        lblNewLabel.setBounds(302, 234, 447, 46);
         contentPane.add(lblNewLabel);
 
         String textoDescripcion = "<html><body>Sistema de reserva de hotel. Controle y administre de forma óptima y fácil <br> el flujo de reservas y de huespédes del hotel   </body></html>";
